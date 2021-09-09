@@ -1,0 +1,22 @@
+function doGet() {
+  // Initial locations and values
+  var rangespot = 'B1';
+  var spreadsheet = SpreadsheetApp.getActive();
+  var thisSheet = spreadsheet.getSheetByName('NZHerald');
+  var url = thisSheet.getRange(rangespot).getValue();
+  var html = UrlFetchApp.fetch(url).getContentText();
+
+  //Search for "article__body" in the HTML and return position
+  var start_searchstring = "article__body ";
+  var len_start_searchstring = start_searchstring.length;
+  var endsearchstring = "article__content";
+  var start_position = html.indexOf(start_searchstring);
+  var end_position = html.indexOf(endsearchstring);
+  var keyOutput = html.slice(start_position + len_start_searchstring,end_position-1);
+
+  //Make cell spreadsheet the output
+  var endspot = 'G3'
+  var sourceCellValue = thisSheet.getRange(endspot).setValue(keyOutput);
+
+  console.log('Complete')
+}  
